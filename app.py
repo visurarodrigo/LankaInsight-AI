@@ -7,261 +7,12 @@ from dotenv import load_dotenv
 
 # --- 1. APP CONFIGURATION & API SETUP ---
 st.set_page_config(
-    page_title="LankaInsight | Business Intelligence",
-    page_icon="📊",
+    page_title="LankaInsight | Business Intelligence", 
+    page_icon="📊", 
     layout="wide",
     initial_sidebar_state="expanded"
 )
 load_dotenv()
-
-# Custom CSS for a modern editorial intelligence dashboard
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-
-    :root {
-        --ink: #17313b;
-        --muted: #52666b;
-        --paper: #f8faf9;
-        --surface: #ffffff;
-        --line: #dce5e1;
-        --teal: #0f766e;
-        --teal-dark: #0b5f59;
-        --coral: #ef6a5b;
-        --coral-soft: #fff0ed;
-    }
-
-    /* Main App Background */
-    .stApp {
-        background: var(--paper);
-        color: var(--ink);
-        font-family: 'DM Sans', sans-serif;
-    }
-
-    [data-testid="stAppViewContainer"] > .main {
-        background: var(--paper);
-    }
-
-    .block-container {
-        max-width: 1200px;
-        padding: 2rem 2.5rem 2.5rem !important;
-        margin-top: 0 !important;
-    }
-
-    h1, h2, h3, h4 {
-        color: var(--ink) !important;
-        font-family: 'Space Grotesk', sans-serif !important;
-    }
-
-    h2 {
-        font-size: 1.4rem !important;
-        margin-top: 1.2rem !important;
-        margin-bottom: 0.8rem !important;
-    }
-
-    p, label, .stCaption {
-        color: var(--muted);
-    }
-
-    /* Compact spacing */
-    .stMarkdown, .stText, .stHtml {
-        margin-bottom: 0.5rem !important;
-    }
-
-    /* Header - More compact */
-    .main-header {
-        color: var(--ink) !important;
-        font-family: 'Space Grotesk', sans-serif !important;
-        font-size: 2.8rem !important;
-        line-height: 1 !important;
-        margin: 0 0 0.3rem 0 !important;
-        font-weight: 700 !important;
-    }
-
-    .main-header::after {
-        background: var(--coral);
-        border-radius: 99px;
-        content: '';
-        display: inline-block;
-        height: 0.5rem;
-        margin-left: 0.4rem;
-        width: 0.5rem;
-    }
-
-    [data-testid="stCaptionContainer"] {
-        color: var(--muted);
-        font-size: 0.85rem;
-        margin-top: 0 !important;
-        margin-bottom: 1rem !important;
-    }
-
-    hr {
-        border: 0;
-        border-top: 1px solid var(--line);
-        margin: 1rem 0;
-    }
-
-    /* Surface styling - tighter padding */
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        background: var(--surface);
-        border: 1px solid var(--line) !important;
-        border-radius: 8px !important;
-        box-shadow: 0 4px 12px rgba(23, 49, 59, 0.06) !important;
-        padding: 1rem !important;
-        margin-bottom: 0.5rem !important;
-    }
-
-    /* Inputs - compact */
-    .stTextArea, .stTextInput, .stNumberInput {
-        margin-bottom: 0.5rem !important;
-    }
-    
-    .stTextArea textarea, .stTextInput input, .stNumberInput input {
-        background: var(--surface) !important;
-        border: 1px solid var(--line) !important;
-        border-radius: 6px !important;
-        color: var(--ink) !important;
-        font-family: 'DM Sans', sans-serif !important;
-    }
-
-    /* Primary Button */
-    div.stButton > button[kind="primary"] {
-        background: var(--teal) !important;
-        border: 1px solid var(--teal) !important;
-        border-radius: 6px !important;
-        color: white !important;
-        font-family: 'DM Sans', sans-serif !important;
-        font-weight: 600 !important;
-        padding: 0.5rem 1.5rem !important;
-        min-height: 2.4rem;
-        transition: all 0.2s ease !important;
-    }
-    div.stButton > button[kind="primary"] *,
-    div.stButton > button[kind="primary"] p {
-        color: #ffffff !important;
-    }
-    div.stButton > button[kind="primary"]:hover {
-        background: var(--teal-dark) !important;
-        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25) !important;
-        transform: translateY(-1px) !important;
-    }
-
-    /* Tabs - compact */
-    .stTabs {
-        margin-top: 0.5rem !important;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        background: #eef3f1;
-        border-radius: 8px;
-        gap: 0.2rem !important;
-        padding: 0.2rem;
-        margin-bottom: 1rem !important;
-    }
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 6px;
-        color: var(--muted) !important;
-        height: 38px !important;
-        white-space: nowrap !important;
-        font-size: 0.82rem !important;
-        font-weight: 600 !important;
-        padding: 0 0.9rem !important;
-    }
-    .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        background: var(--surface) !important;
-        box-shadow: 0 2px 6px rgba(23, 49, 59, 0.08);
-        color: var(--teal) !important;
-    }
-
-    /* Metrics - compact */
-    div[data-testid="stMetric"] {
-        background: #f0f5f3;
-        border-left: 3px solid var(--coral);
-        border-radius: 5px;
-        padding: 0.6rem 0.9rem;
-        margin-bottom: 0.5rem !important;
-    }
-    div[data-testid="stMetricValue"] {
-        color: var(--ink) !important;
-        font-family: 'Space Grotesk', sans-serif !important;
-        font-weight: 700 !important;
-    }
-
-    /* Sidebar - Dark and modern */
-    section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0f2830 0%, #17313b 100%);
-        border-right: 1px solid rgba(255,255,255,0.1);
-    }
-    section[data-testid="stSidebar"] * {
-        color: #e8f1ee !important;
-    }
-    section[data-testid="stSidebar"] h1, 
-    section[data-testid="stSidebar"] h2, 
-    section[data-testid="stSidebar"] h3 {
-        color: #ffffff !important;
-        font-weight: 700 !important;
-    }
-    section[data-testid="stSidebar"] hr {
-        border-top-color: rgba(234, 242, 239, 0.2);
-        margin: 1rem 0;
-    }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 6px;
-    }
-    section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
-        color: #c5d5d0 !important;
-        line-height: 1.6;
-        font-size: 0.85rem;
-    }
-    section[data-testid="stSidebar"] label,
-    section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
-        color: #e8f1ee !important;
-        font-weight: 600 !important;
-        font-size: 0.8rem;
-    }
-    section[data-testid="stSidebar"] [data-testid="stSlider"] div[role="slider"] {
-        background: var(--coral) !important;
-    }
-
-    /* Info boxes - compact */
-    [data-testid="stAlert"] {
-        border: 1px solid #f7c9c2;
-        border-radius: 6px;
-        padding: 0.6rem 0.9rem !important;
-        margin: 0.5rem 0 !important;
-    }
-    [data-testid="stAlert"] p {
-        color: #31515c !important;
-        font-weight: 500;
-        font-size: 0.85rem;
-        margin: 0 !important;
-    }
-
-    /* Columns spacing */
-    .stColumn {
-        padding: 0.3rem !important;
-    }
-
-    /* Remove excessive margins from widgets */
-    .stTextInput, .stTextArea, .stButton, .stMarkdown {
-        margin-bottom: 0.4rem !important;
-    }
-
-    @media (max-width: 800px) {
-        .block-container {
-            padding: 1.5rem 1rem 2rem !important;
-        }
-        .main-header {
-            font-size: 2.2rem !important;
-        }
-        .stTabs [data-baseweb="tab"] {
-            font-size: 0.74rem !important;
-            padding: 0 0.6rem !important;
-        }
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 # Load API Key: Checks local .env first, then Streamlit Secrets (for cloud deployment)
 api_key = os.getenv("GROQ_API_KEY")
@@ -283,20 +34,15 @@ MODEL_NAME = "openai/gpt-oss-20b"
 def get_groq_client():
     return Groq(api_key=api_key)
 
-def call_groq(prompt, temperature=None, max_tokens=None):
+def call_groq(prompt, temperature, max_tokens):
     """Sends prompt to Groq and returns the text response."""
     client = get_groq_client()
-
-    # Use sidebar settings if specific values aren't provided
-    temp = temperature if temperature is not None else st.session_state.get('temperature', 0.2)
-    tokens = max_tokens if max_tokens is not None else st.session_state.get('max_tokens', 2000)
-
     try:
         response = client.chat.completions.create(
             model=MODEL_NAME,
             messages=[{"role": "user", "content": prompt}],
-            temperature=temp,
-            max_tokens=tokens,
+            temperature=temperature,
+            max_tokens=max_tokens,
             top_p=0.8
         )
         content = response.choices[0].message.content
@@ -316,55 +62,40 @@ def parse_json_response(raw_text):
     # Find the first '{' and the last '}' to isolate the JSON object
     start_idx = raw_text.find('{')
     end_idx = raw_text.rfind('}')
-
+    
     if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
         json_str = raw_text[start_idx:end_idx+1]
         try:
-            # Remove possible trailing commas or common LLM JSON artifacts
             return json.loads(json_str), None
         except json.JSONDecodeError:
-            # Try a slightly more aggressive cleanup for common LLM errors
-            try:
-                # Remove common markdown-like artifacts if any
-                cleaned_str = re.sub(r'^```json\s*|\s*```$', '', json_str.strip(), flags=re.IGNORECASE | re.MULTILINE)
-                return json.loads(cleaned_str), None
-            except:
-                return None, json_str
+            return None, json_str
     return None, raw_text
 
 # --- 3. UI HEADER ---
-st.markdown('<h1 class="main-header">LankaInsight</h1>', unsafe_allow_html=True)
+st.title(" LankaInsight")
 st.caption("AI-Powered Business Intelligence for the Sri Lankan Market")
 st.divider()
 
-# --- 4. SIDEBAR (Control Center) ---
+# --- 4. SIDEBAR (Portfolio Context) ---
 with st.sidebar:
     st.header("About LankaInsight")
     st.markdown("""
-    LankaInsight is a practical business intelligence tool designed for Sri Lankan analysts, product managers, and recruiters.
+    LankaInsight is a practical business intelligence tool designed for Sri Lankan analysts, product managers, and recruiters. 
     It transforms unstructured local business data into actionable, structured insights in seconds.
     """)
-
+    
     st.divider()
-
-    # Model Tuning Section
-    with st.expander("⚙️ Model Tuning", expanded=True):
-        st.caption("Adjust the AI's behavior for different tasks.")
-        st.session_state.temperature = st.slider("Temperature", 0.0, 1.0, 0.2, 0.05, help="Higher values make output more creative, lower values more deterministic.")
-        st.session_state.max_tokens = st.number_input("Max Tokens", min_value=100, max_value=32000, value=2000, step=100, help="Limits the length of the AI response.")
-
-    st.divider()
-
-    st.subheader("How it Works")
+    
+    st.subheader("⚙️ How it Works")
     st.markdown("""
     Under the hood, this application leverages advanced Large Language Model (LLM) architectures and prompt engineering techniques to ensure high accuracy and reliability:
-
+    
     * **Zero-Shot Generation:** Used in the News Briefer to synthesize complex economic data without prior examples.
     * **Few-Shot Classification:** Powers the Review Analyzer by providing the model with contextual examples to ensure strict adherence to local business categories.
     * **Chain-of-Thought Reasoning:** The Impact Analyzer forces the model to reason step-by-step internally before generating strategic recommendations, significantly reducing hallucinations.
     * **Structured Output Parsing:** The Job Intelligence feature enforces strict JSON schemas, allowing seamless integration with downstream HR databases.
     """)
-
+    
     st.divider()
     st.caption("Built by Visura Rodrigo | Data Science & Business Analytics")
 
