@@ -1,100 +1,98 @@
-# 📊 LankaInsight AI
-### AI-Powered Business Intelligence for the Sri Lankan Market
 
-LankaInsight AI is a professional business intelligence tool designed to transform unstructured local business and economic data into actionable, structured insights. Built as a practical implementation of advanced LLM orchestration and prompt engineering, this tool helps analysts, product managers, and recruiters navigate the unique complexities of the Sri Lankan corporate landscape.
+# 📊 LankaInsight: AI-Powered Business Intelligence
+
+**LankaInsight** is a practical, product-first business intelligence tool designed for the Sri Lankan market. It transforms unstructured local business data—such as economic news, customer reviews, and job postings—into actionable, structured insights in seconds.
+
+🔗 **Live Demo:** [Insert your Streamlit Cloud URL here]
 
 ---
 
-## 🖼️ Visual Preview
+## 📸 App Previews
 
-| News Briefer | Review Analyzer |
+| 📰 Economic News Briefer | ⭐ Customer Review Analyzer |
 | :---: | :---: |
 | ![News Briefer](ScreenShots/News%20Briefer.png) | ![Review Analyzer](ScreenShots/Review%20Analyzer.png) |
-| **Zero-Shot Summarization** | **Few-Shot Classification** |
-| | |
-| **Impact Analyzer** | **Job Intelligence** |
-| ![Impact](ScreenShots/Impact.png) | ![Job](ScreenShots/Job.png) |
-| **Chain-of-Thought Reasoning** | **Structured JSON Extraction** |
+
+| 📉 Business Impact Analyzer | 💼 Job Post Intelligence |
+| :---: | :---: |
+| ![Impact Analyzer](ScreenShots/Impact.png) | ![Job Intelligence](ScreenShots/Job.png) |
 
 ---
 
-## 🚀 Core Features
+## 🎓 Learning & Foundations
 
-LankaInsight AI provides four specialized modules, each solving a distinct business problem using targeted AI patterns:
-
-### 📰 Economic News Briefer
-**The Problem:** High-volume economic news is often too dense for quick executive decision-making.
-**The Solution:** Uses **Zero-Shot Generation** to synthesize raw market updates into three high-impact, executive-ready bullet points focusing on financial implications and strategic takeaways.
-
-### ⭐ Customer Review Analyzer
-**The Problem:** Customer feedback is unstructured and varies wildly in tone and category.
-**The Solution:** Implements **Few-Shot Classification**. By providing the model with local context examples, it strictly categorizes feedback (e.g., Food, App, Service), assigns sentiment/severity, and generates a concrete recommended action.
-
-### 📉 Business Impact Analyzer
-**The Problem:** Economic policy changes (like new taxes) have complex ripple effects that are easy to overlook.
-**The Solution:** Leverages **Chain-of-Thought (CoT) Reasoning**. The model is forced to generate an internal "Reasoning Process" before delivering a strategic assessment, significantly reducing hallucinations and increasing the logical depth of risk analysis.
-
-### 💼 Job Post Intelligence
-**The Problem:** Job descriptions are inconsistent, making it hard to quantitatively assess role alignment.
-**The Solution:** Utilizes **Structured Output Parsing**. It enforces a strict JSON schema to extract company, role, and salary data, while calculating a `match_score` against a standard Data Science profile.
+This application is built upon industry best practices learned through two specialized DeepLearning.AI & OpenAI courses:
+*   **[ChatGPT Prompt Engineering for Developers](https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/)**: Mastered core principles including delimiter usage, few-shot prompting, and enforcing structured JSON outputs for reliable software integration.
+*   **[Building Systems with the ChatGPT API](https://www.deeplearning.ai/short-courses/building-systems-with-chatgpt/)**: Implemented advanced production techniques such as Chain-of-Thought (CoT) reasoning, inner monologue parsing, and iterative prompt evaluation to minimize hallucinations and ensure robust edge-case handling.
 
 ---
 
-## 🛠️ Technical Implementation
+## 🚀 Features
 
-This project was developed to practice and implement concepts from the **DeepLearning.AI** courses: *ChatGPT Prompt Engineering for Developers* and *Building Systems with the ChatGPT API*.
+*   **📰 Economic News Briefer:** Synthesizes raw economic updates into concise, executive-ready summaries tailored for C-suite decision-makers.
+*   **⭐ Customer Review Analyzer:** Instantly categorizes, scores, and generates actionable remediation plans for customer feedback across local industries (Banking, Retail, Ride-hailing).
+*   **📉 Business Impact Analyzer:** Evaluates strategic risks and operational impacts of local economic events, providing direct/indirect impact assessments and risk levels.
+*   **💼 Job Post Intelligence:** Extracts structured data from job descriptions and evaluates role alignment against standard Data Science profiles.
 
-### Tech Stack
-- **Frontend:** [Streamlit](https://streamlit.io/) (for rapid UI deployment)
-- **LLM Orchestration:** [Groq API](https://groq.com/) (utilizing ultra-fast inference)
-- **Model:** `openai/gpt-oss-20b` (and Llama 3 variants during exploration)
-- **Language:** Python 3.12
+## 🧠 Under the Hood: Prompt Engineering Architecture
 
-### Prompt Engineering Patterns
-- **Zero-Shot:** Clear instructions with delimiters (`"""`) for immediate synthesis.
-- **Few-Shot:** Providing `Input -> Output` pairs to steer tone and classification accuracy.
-- **Chain-of-Thought:** Using "inner monologue" patterns to simulate expert strategic consulting.
-- **Structured JSON:** Implementing strict schema enforcement for downstream data integration.
+While the UI is designed to be intuitive for non-technical business users, the backend leverages advanced Large Language Model (LLM) architectures and prompt engineering patterns to ensure high accuracy and reliability:
 
----
+1.  **Zero-Shot Generation & Delimiters:** Used in the News Briefer to synthesize complex economic data without prior examples, utilizing strict delimiters (`"""`) to prevent prompt injection and separate instructions from context.
+2.  **Few-Shot Classification:** Powers the Review Analyzer by providing the model with contextual `Input → Output` examples. This ensures strict adherence to local business categories and sentiment scoring without the need for fine-tuning.
+3.  **Chain-of-Thought (CoT) Reasoning:** The Impact Analyzer forces the model to reason step-by-step internally (using Markdown headers for reasoning vs. final output). This significantly reduces hallucinations in complex strategic scenarios.
+4.  **Structured Output Parsing:** The Job Intelligence feature enforces strict JSON schemas. A robust regex-based parser extracts the JSON payload, allowing seamless integration with downstream HR databases.
 
-## ⚙️ Getting Started
+*Note: Temperature, top-p, and max_tokens are dynamically tuned per feature (e.g., `temperature=0.0` for strict JSON extraction, `temperature=0.5` for strategic reasoning).*
 
-### Prerequisites
-- Python 3.10+
-- A Groq API Key ([Get one here](https://console.groq.com/))
+## 📁 Project Structure
 
-### Installation
-1. **Clone the repository:**
+*   `app.py` - The main production-ready Streamlit application with custom CSS styling.
+*   `lankainsight_exploration.ipynb` - The Jupyter Notebook used for iterative prompt testing, parameter tuning, and debugging before UI integration.
+*   `ScreenShots/` - UI previews for the README.
+*   `requirements.txt` - Python dependencies.
+*   `.env` - Local environment variables (API keys).
+
+## 🛠️ Tech Stack
+
+*   **Backend / AI:** Python, Groq API (`openai/gpt-oss-20b`), `groq` SDK
+*   **Frontend / UI:** Streamlit (Custom CSS)
+*   **Environment:** `python-dotenv` for local secret management
+
+## 🔄 Iterative Development & Lessons Learned
+
+This project was built following the iterative prompt development lifecycle: `Idea → Write → Run → Evaluate → Improve → Repeat`. 
+
+Key engineering challenges solved during development:
+*   **Empty Response Handling:** Resolved issues where strict "output only JSON" constraints caused the model to return empty strings by implementing a robust regex parser that isolates JSON objects from conversational filler.
+*   **Fallback Parsing:** Implemented fallback logic in the Impact Analyzer to handle cases where the model ignores formatting tags, ensuring the app never crashes on UI generation.
+*   **Token Management:** Dynamically adjusted `max_tokens` per feature to prevent output truncation during complex reasoning tasks while keeping latency low for simple classifications.
+
+## 💻 How to Run Locally
+
+1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/LankaInsight-AI.git
    cd LankaInsight-AI
    ```
-
-2. **Set up a virtual environment:**
+2. Create and activate a virtual environment:
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
-
-3. **Install dependencies:**
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-
-4. **Configure Environment:**
-   Create a `.env` file in the root directory:
+4. Set up your environment variables:
+   Create a `.env` file in the root directory and add your Groq API key:
    ```env
-   GROQ_API_KEY=your_api_key_here
+   GROQ_API_KEY=your_groq_api_key_here
+   ```
+5. Run the Streamlit app:
+   ```bash
+   streamlit run app.py
    ```
 
-### Running the Application
-```bash
-streamlit run app.py
-```
-
 ---
-
-## 👤 About the Author
-**Visura Rodrigo**  
-Passionate about bridging the gap between Large Language Models and real-world business applications in Sri Lanka.
+*Built by Visura Rodrigo*
