@@ -3,7 +3,7 @@
 
 **LankaInsight** is a practical, product-first business intelligence tool designed for the Sri Lankan market. It transforms unstructured local business data—such as economic news, customer reviews, and job postings—into actionable, structured insights in seconds.
 
-🔗 **Live Demo:** [Insert your Streamlit Cloud URL here]
+🔗 **Live Demo:** https://lankainsight-ai.streamlit.app
 
 ---
 
