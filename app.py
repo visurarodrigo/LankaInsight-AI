@@ -71,22 +71,90 @@ def parse_json_response(raw_text):
             return None, json_str
     return None, raw_text
 
+# --- Custom Fonts ---
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Main application font */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* LankaInsight AI title */
+.lanka-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 4.2rem;
+    font-weight: 400;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 0;
+}
+
+/* Subtitle */
+.lanka-caption {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin-top: 4px;
+    margin-bottom: 24px;
+    opacity: 0.7;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 # --- 3. UI HEADER ---
-st.title(" LankaInsight")
-st.caption("AI-Powered Business Intelligence for the Sri Lankan Market")
-st.divider()
+st.markdown(
+    '<div class="lanka-title">LankaInsight AI</div>',
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    '<div class="lanka-caption">AI-Powered Business Intelligence for the Sri Lankan Market</div>',
+    unsafe_allow_html=True
+)
+
+# --- Sidebar Font Styling ---
+st.markdown("""
+<style>
+/* Sidebar body text */
+[data-testid="stSidebar"] p {
+    font-size: 0.85rem;
+}
+
+/* Sidebar headings */
+[data-testid="stSidebar"] h1 {
+    font-size: 1.5rem;
+}
+
+[data-testid="stSidebar"] h2 {
+    font-size: 1.2rem;
+}
+
+[data-testid="stSidebar"] h3 {
+    font-size: 1rem;
+}
+
+/* Sidebar list items */
+[data-testid="stSidebar"] li {
+    font-size: 0.82rem;
+}
+</style>
+""", unsafe_allow_html=True)
+
 
 # --- 4. SIDEBAR (Portfolio Context) ---
 with st.sidebar:
     st.header("About LankaInsight")
+
     st.markdown("""
     LankaInsight is a practical business intelligence tool designed for Sri Lankan analysts, product managers, and recruiters. 
     It transforms unstructured local business data into actionable, structured insights in seconds.
     """)
-    
-    st.divider()
-    
+
     st.subheader("⚙️ How it Works")
+
     st.markdown("""
     Under the hood, this application leverages advanced Large Language Model (LLM) architectures and prompt engineering techniques to ensure high accuracy and reliability:
     
@@ -95,9 +163,8 @@ with st.sidebar:
     * **Chain-of-Thought Reasoning:** The Impact Analyzer forces the model to reason step-by-step internally before generating strategic recommendations, significantly reducing hallucinations.
     * **Structured Output Parsing:** The Job Intelligence feature enforces strict JSON schemas, allowing seamless integration with downstream HR databases.
     """)
-    
-    st.divider()
-    st.caption("Built by Visura Rodrigo | Data Science & Business Analytics")
+
+    st.caption("Built by Visura Rodrigo")
 
 # --- 5. MAIN TABS ---
 tab1, tab2, tab3, tab4 = st.tabs([
@@ -110,49 +177,82 @@ tab1, tab2, tab3, tab4 = st.tabs([
 # ==========================================
 # FEATURE 1: ECONOMIC NEWS BRIEFER
 # ==========================================
+
 with tab1:
-    st.header("Economic News Briefer")
-    st.markdown("Transform raw economic updates into concise, executive-ready summaries.")
-    
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        default_news = """The Central Bank of Sri Lanka reported that inflation eased to 4.5% in August, down from 5.1% in July, driven by lower food and energy prices. However, the bank warned that global supply chain disruptions could cause minor fluctuations in the coming quarter. The rupee has remained relatively stable against the US dollar, and foreign reserves have increased to $3.2 billion."""
-        
-        news_text = st.text_area("Paste Economic News or Headlines:", value=default_news, height=150)
-        
-        if st.button("Generate Brief", type="primary", use_container_width=True):
-            prompt = f"""You are a Senior Business Analyst for a top-tier consulting firm in Sri Lanka.
+
+    # Header + Info Box
+    header_col, info_col = st.columns([1, 1])
+
+    with header_col:
+        st.header("Economic News Briefer")
+        st.markdown(
+            "Transform raw economic updates into concise, executive-ready summaries."
+        )
+
+    with info_col:
+        st.info(
+            "💡 **Best for:** Daily market monitoring, "
+            "investor updates, and quick strategic alignment."
+        )
+
+    # News Input
+    default_news = """The Central Bank of Sri Lanka reported that inflation eased to 4.5% in August, down from 5.1% in July, driven by lower food and energy prices. However, the bank warned that global supply chain disruptions could cause minor fluctuations in the coming quarter. The rupee has remained relatively stable against the US dollar, and foreign reserves have increased to $3.2 billion."""
+
+    news_text = st.text_area(
+        "Paste Economic News or Headlines:",
+        value=default_news,
+        height=140,
+        width="stretch" 
+    )
+
+    if st.button(
+        "Generate Brief",
+        type="primary",
+        use_container_width=True
+    ):
+
+        prompt = f"""You are a Senior Business Analyst for a top-tier consulting firm in Sri Lanka.
+
 Summarize the following economic news text into exactly 3 concise, high-impact bullet points tailored for C-suite executives.
+
 Focus on financial implications, market trends, and strategic takeaways. Do not include introductory or concluding text.
 
 Text:
+
 \"\"\"
 {news_text}
 \"\"\"
 """
-            with st.spinner("Synthesizing market data..."):
-                result = call_groq(prompt, temperature=0.2, max_tokens=8000)
-            
-            st.subheader("Executive Summary")
-            st.write(result)
 
-    with col2:
-        st.info("💡 **Best for:** Daily market monitoring, investor updates, and quick strategic alignment.")
+        with st.spinner("Synthesizing market data..."):
+            result = call_groq(
+                prompt,
+                temperature=0.2,
+                max_tokens=8000
+            )
+
+        st.subheader("Executive Summary")
+        st.write(result)
 
 # ==========================================
 # FEATURE 2: CUSTOMER REVIEW ANALYZER
 # ==========================================
 with tab2:
-    st.header("Customer Review Analyzer")
-    st.markdown("Instantly categorize, score, and generate action plans for customer feedback.")
+    header_col, info_col = st.columns([1, 1])
+
+    with header_col:
+        st.header("Customer Review Analyzer")
+        st.markdown("Instantly categorize, score, and generate action plans for customer feedback.")
+
+    with info_col:
+        st.info("💡 **Best for:** QA teams, branch managers, and app developers monitoring user sentiment.")
     
-    col1, col2 = st.columns([2, 1])
+    col1 = st.container()
     
     with col1:
         default_review = "I waited 45 minutes at the Commercial Bank branch in Nugegoda just to deposit a cheque, and the teller was incredibly rude when I asked about the delay. The app also crashed twice while I was trying to check my balance beforehand."
         
-        review_text = st.text_area("Paste Customer Review:", value=default_review, height=120)
+        review_text = st.text_area("Paste Customer Review:", value=default_review, height=140, width="stretch")
         
         if st.button("Analyze Feedback", type="primary", use_container_width=True):
             # FIX: Removed "ONLY the JSON object" constraint which caused empty responses
@@ -197,23 +297,25 @@ Output:
                 with st.expander("View Raw Output for Debugging"):
                     st.code(error)
 
-    with col2:
-        st.info("💡 **Best for:** QA teams, branch managers, and app developers monitoring user sentiment.")
-
 # ==========================================
 # FEATURE 3: BUSINESS IMPACT ANALYZER
 # ==========================================
 with tab3:
-    st.header("Business Impact Analyzer")
-    st.markdown("Evaluate strategic risks and operational impacts of local economic events.")
+    header_col, info_col = st.columns([1, 1])
+
+    with header_col:
+        st.header("Business Impact Analyzer")
+        st.markdown("Evaluate strategic risks and operational impacts of local economic events.")
+
+    with info_col:
+        st.info("💡 **Best for:** Strategy teams, policy analysts, and board-level risk assessments.")
     
-    col1, col2 = st.columns([2, 1])
+    col1 = st.container()
     
     with col1:
         default_scenario = "The Sri Lankan government introduces a new 15% digital services tax on all foreign SaaS platforms (like AWS, Slack, and Adobe) starting next quarter."
         
-        scenario_text = st.text_area("Describe Business Scenario or Economic Event:", value=default_scenario, height=120)
-        
+        scenario_text = st.text_area("Describe Business Scenario or Economic Event:", value=default_scenario, height=120, width="stretch"     )        
         if st.button("Run Impact Analysis", type="primary", use_container_width=True):
             # FIX: Switched from XML tags to Markdown headers, which this model prefers
             prompt = f"""You are a Strategic Risk Consultant for the Sri Lankan corporate sector.
@@ -252,35 +354,57 @@ Scenario:
                     st.markdown("*The following is the internal step-by-step logic used to generate the assessment:*")
                     st.text(thinking_match.group(1).strip())
 
-    with col2:
-        st.info("💡 **Best for:** Strategy teams, policy analysts, and board-level risk assessments.")
-
 # ==========================================
 # FEATURE 4: JOB POST INTELLIGENCE
 # ==========================================
+
 with tab4:
-    st.header("Job Post Intelligence")
-    st.markdown("Extract structured data and evaluate role alignment with Data Science profiles.")
-    
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        default_job = """Wanted: Junior Data Analyst at TechLanka Solutions. 
-Location: Hybrid (Colombo 03 / Remote). 
-Requirements: Python, SQL, PowerBI, basic Excel macros. 
-Salary: LKR 120,000 - 150,000 per month. 
+
+    # Header + Info Box
+    header_col, info_col = st.columns([1, 1])
+
+    with header_col:
+        st.header("Job Post Intelligence")
+        st.markdown(
+            "Extract structured data and evaluate role alignment with Data Science profiles."
+        )
+
+    with info_col:
+        st.info(
+            "💡 **Best for:** HR teams, talent acquisition, "
+            "and candidates evaluating role fit."
+        )
+
+    # Job Posting Input
+    default_job = """Wanted: Junior Data Analyst at TechLanka Solutions.
+Location: Hybrid (Colombo 03 / Remote).
+Requirements: Python, SQL, PowerBI, basic Excel macros.
+Salary: LKR 120,000 - 150,000 per month.
 Contact: careers@techlanka.lk"""
-        
-        job_text = st.text_area("Paste Job Posting:", value=default_job, height=150)
-        
-        if st.button("Extract & Evaluate", type="primary", use_container_width=True):
-            prompt = f"""You are a Technical Recruiter specializing in Data Science and Analytics roles in Sri Lanka.
+
+    job_text = st.text_area(
+        "Paste Job Posting:",
+        value=default_job,
+        height=150,
+        width="stretch"
+    )
+
+    if st.button(
+        "Extract & Evaluate",
+        type="primary",
+        use_container_width=True
+    ):
+
+        prompt = f"""You are a Technical Recruiter specializing in Data Science and Analytics roles in Sri Lanka.
+
 Extract information from the job posting below into a strict JSON object.
 
 Additionally, calculate a "match_score" (0-100) representing how well this role matches a standard "Data Scientist" profile (which heavily weights Machine Learning, Python, SQL, and Statistical Modeling).
 
 Output the JSON object.
+
 JSON Schema:
+
 {{
   "company_name": "string",
   "role": "string",
@@ -291,46 +415,104 @@ JSON Schema:
 }}
 
 Job Posting:
+
 \"\"\"
 {job_text}
 \"\"\"
 """
-            with st.spinner("Parsing job requirements..."):
-                raw_result = call_groq(prompt, temperature=0.0, max_tokens=8000)
-            
-            parsed_data, error = parse_json_response(raw_result)
-            
-            if parsed_data:
-                st.subheader("Role Intelligence")
-                
-                # Top row: Company and Role
-                c1, c2 = st.columns(2)
-                c1.markdown(f"**Company:** {parsed_data.get('company_name', 'N/A')}")
-                c2.markdown(f"**Role:** {parsed_data.get('role', 'N/A')}")
-                
-                # Middle row: Location and Salary
-                c3, c4 = st.columns(2)
-                c3.markdown(f"**Location:** {parsed_data.get('location', 'N/A')}")
-                c4.markdown(f"**Salary:** {parsed_data.get('salary_range', 'N/A')}")
-                
-                st.divider()
-                
-                # Bottom row: Skills and Match Score
-                c5, c6 = st.columns([2, 1])
-                c5.markdown("**Required Skills:**")
-                skills = parsed_data.get("required_skills", [])
+
+        with st.spinner("Parsing job requirements..."):
+            raw_result = call_groq(
+                prompt,
+                temperature=0.0,
+                max_tokens=8000
+            )
+
+        parsed_data, error = parse_json_response(raw_result)
+
+        if parsed_data:
+
+            st.subheader("Role Intelligence")
+
+            # ------------------------------------------
+            # Company and Role
+            # ------------------------------------------
+
+            c1, c2 = st.columns(2)
+
+            with c1:
+                st.markdown(
+                    f"**Company:** "
+                    f"{parsed_data.get('company_name', 'N/A')}"
+                )
+
+            with c2:
+                st.markdown(
+                    f"**Role:** "
+                    f"{parsed_data.get('role', 'N/A')}"
+                )
+
+            # ------------------------------------------
+            # Location and Salary
+            # ------------------------------------------
+
+            c3, c4 = st.columns(2)
+
+            with c3:
+                st.markdown(
+                    f"**Location:** "
+                    f"{parsed_data.get('location', 'N/A')}"
+                )
+
+            with c4:
+                st.markdown(
+                    f"**Salary:** "
+                    f"{parsed_data.get('salary_range', 'N/A')}"
+                )
+
+            st.divider()
+
+            # ------------------------------------------
+            # Required Skills + Match Score
+            # ------------------------------------------
+
+            c5, c6 = st.columns([2, 1])
+
+            with c5:
+                st.markdown("**Required Skills:**")
+
+                skills = parsed_data.get(
+                    "required_skills",
+                    []
+                )
+
                 if skills:
-                    st.write(", ".join([f"`{skill}`" for skill in skills]))
+                    st.write(
+                        ", ".join(
+                            [f"`{skill}`" for skill in skills]
+                        )
+                    )
                 else:
                     st.write("N/A")
-                
-                match_score = parsed_data.get("match_score", 0)
-                c6.metric("Data Scientist Match", f"{match_score}%")
-                
-            else:
-                st.error("⚠️ Failed to parse job data. Please try again.")
-                with st.expander("View Raw Output for Debugging"):
-                    st.code(error)
 
-    with col2:
-        st.info("💡 **Best for:** HR teams, talent acquisition, and candidates evaluating role fit.")
+            with c6:
+                match_score = parsed_data.get(
+                    "match_score",
+                    0
+                )
+
+                st.metric(
+                    "Data Scientist Match",
+                    f"{match_score}%"
+                )
+
+        else:
+
+            st.error(
+                "⚠️ Failed to parse job data. Please try again."
+            )
+
+            with st.expander(
+                "View Raw Output for Debugging"
+            ):
+                st.code(error)
