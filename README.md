@@ -32,7 +32,7 @@ This application is built upon industry best practices learned through two speci
 *   **📰 Economic News Briefer:** Synthesizes raw economic updates into concise, executive-ready summaries tailored for C-suite decision-makers.
 *   **⭐ Customer Review Analyzer:** Instantly categorizes, scores, and generates actionable remediation plans for customer feedback across local industries (Banking, Retail, Ride-hailing).
 *   **📉 Business Impact Analyzer:** Evaluates strategic risks and operational impacts of local economic events, providing direct/indirect impact assessments and risk levels.
-*   **💼 Job Post Intelligence:** Extracts structured data from job descriptions and evaluates role alignment against standard Data Science profiles.
+*   **💼 Job Post Intelligence:** Extracts structured data from job descriptions and evaluates role alignment against standard profiles.
 
 ## 🧠 Under the Hood: Prompt Engineering Architecture
 
