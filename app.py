@@ -366,13 +366,13 @@ with tab4:
     with header_col:
         st.header("Job Post Intelligence")
         st.markdown(
-            "Extract structured data and evaluate role alignment with Data Science profiles."
+            "Extract structured information and evaluate overall role alignment from job postings."
         )
 
     with info_col:
         st.info(
             "💡 **Best for:** HR teams, talent acquisition, "
-            "and candidates evaluating role fit."
+            "and candidates evaluating job opportunities."
         )
 
     # Job Posting Input
@@ -395,11 +395,15 @@ Contact: careers@techlanka.lk"""
         use_container_width=True
     ):
 
-        prompt = f"""You are a Technical Recruiter specializing in Data Science and Analytics roles in Sri Lanka.
+        prompt = f"""You are a Technical Recruiter and Job Market Analyst.
 
-Extract information from the job posting below into a strict JSON object.
+Analyze the job posting below and extract the key information into a strict JSON object.
 
-Additionally, calculate a "match_score" (0-100) representing how well this role matches a standard "Data Scientist" profile (which heavily weights Machine Learning, Python, SQL, and Statistical Modeling).
+The analysis should be role-independent and suitable for different types of jobs, including Data Science, Analytics, Software Engineering, Business, IT, Marketing, Finance, and other professional roles.
+
+Calculate a "match_score" (0-100) representing the overall alignment of the job opportunity with the requirements, skills, experience, and qualifications stated in the job posting.
+
+Do not assume the role is a Data Scientist or any other specific profession.
 
 Output the JSON object.
 
@@ -409,8 +413,11 @@ JSON Schema:
   "company_name": "string",
   "role": "string",
   "location": "string",
+  "employment_type": "string",
   "salary_range": "string",
   "required_skills": ["string"],
+  "experience_required": "string",
+  "education_required": "string",
   "match_score": integer
 }}
 
@@ -422,6 +429,7 @@ Job Posting:
 """
 
         with st.spinner("Parsing job requirements..."):
+
             raw_result = call_groq(
                 prompt,
                 temperature=0.0,
@@ -453,7 +461,7 @@ Job Posting:
                 )
 
             # ------------------------------------------
-            # Location and Salary
+            # Location and Employment Type
             # ------------------------------------------
 
             c3, c4 = st.columns(2)
@@ -466,45 +474,74 @@ Job Posting:
 
             with c4:
                 st.markdown(
+                    f"**Employment Type:** "
+                    f"{parsed_data.get('employment_type', 'N/A')}"
+                )
+
+            # ------------------------------------------
+            # Salary and Experience
+            # ------------------------------------------
+
+            c5, c6 = st.columns(2)
+
+            with c5:
+                st.markdown(
                     f"**Salary:** "
                     f"{parsed_data.get('salary_range', 'N/A')}"
                 )
 
-            st.divider()
-
-            # ------------------------------------------
-            # Required Skills + Match Score
-            # ------------------------------------------
-
-            c5, c6 = st.columns([2, 1])
-
-            with c5:
-                st.markdown("**Required Skills:**")
-
-                skills = parsed_data.get(
-                    "required_skills",
-                    []
+            with c6:
+                st.markdown(
+                    f"**Experience Required:** "
+                    f"{parsed_data.get('experience_required', 'N/A')}"
                 )
 
-                if skills:
-                    st.write(
-                        ", ".join(
-                            [f"`{skill}`" for skill in skills]
-                        )
-                    )
-                else:
-                    st.write("N/A")
+            # ------------------------------------------
+            # Education + Match Score
+            # ------------------------------------------
 
-            with c6:
+            c7, c8 = st.columns([2, 1])
+
+            with c7:
+                st.markdown("**Education Required:**")
+
+                st.write(
+                    parsed_data.get(
+                        "education_required",
+                        "N/A"
+                    )
+                )
+
+            with c8:
                 match_score = parsed_data.get(
                     "match_score",
                     0
                 )
 
                 st.metric(
-                    "Data Scientist Match",
+                    "Role Match",
                     f"{match_score}%"
                 )
+
+            # ------------------------------------------
+            # Required Skills
+            # ------------------------------------------
+
+            st.markdown("**Required Skills:**")
+
+            skills = parsed_data.get(
+                "required_skills",
+                []
+            )
+
+            if skills:
+                st.write(
+                    " • ".join(
+                        [f"`{skill}`" for skill in skills]
+                    )
+                )
+            else:
+                st.write("N/A")
 
         else:
 
